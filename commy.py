@@ -57,7 +57,6 @@ def generate_commit_message(staged_files, diffs, project_structure):
     <BLANK LINE>
     <footer>
     """
-    print(prompt, flush=True)
 
     try:
         # response = client.responses.create(
@@ -65,7 +64,7 @@ def generate_commit_message(staged_files, diffs, project_structure):
         # )
 
         response = client.chat.completions.create(
-            model="gpt-4.1",
+            model="gpt-4.1-mini",
             messages=[
                 {
                     "role": "system",
