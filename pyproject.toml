@@ -24,4 +24,4 @@ dependencies = [
 ]
 
 [project.scripts]
-commy = "commy:cli"
+cm = "commy:cli"
