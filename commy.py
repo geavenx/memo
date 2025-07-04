@@ -1,7 +1,7 @@
 import os
+import subprocess
 
 import click
-import git
 import google.generativeai as genai
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -23,25 +23,32 @@ def cli():
 @cli.command()
 @click.option(
     "--model",
-    default="gemini-2.5-pro",
-    help="AI model to use for generating commit messages. Options: gemini-2.5-pro, gpt-4.1-mini",
+    default="gemini-2.0-flash",
+    help="AI model to use for generating commit messages. Options: gemini-2.0-flash, gemini-2.5-pro, gpt-4.1-mini",
 )
 def generate(model):
     """Generates a conventional commit message."""
     try:
-        repo = git.Repo(search_parent_directories=True)
-    except git.InvalidGitRepositoryError:
-        click.echo("This is not a Git repository.")
-        return
+        result = subprocess.run(
+            ["git", "diff", "--staged"], capture_output=True, text=True, check=True
+        )
 
-    staged_diffs = repo.index.diff("HEAD", create_patch=True)
-    if not staged_diffs:
-        click.echo("No staged files to commit.")
-        return
+        click.echo(result.stdout)
 
-    diffs = "".join(diff.diff.decode("utf-8") for diff in staged_diffs)
-    commit_message = generate_commit_message(diffs, model)
-    click.echo(commit_message)
+        commit_message = generate_commit_message(result.stdout, model)
+        click.echo(commit_message)
+
+        if result.stderr:
+            click.echo("\n--- git diff error output ---")
+            click.echo(result.stderr)
+
+    except subprocess.CalledProcessError as err:
+        click.echo(f"Error running git command: {err}")
+
+    except FileNotFoundError:
+        click.echo(
+            "Error: Git command not found. Make sure git is installed in your system before you continue."
+        )
 
 
 def generate_commit_message(diffs, model):
@@ -76,6 +83,15 @@ Output only the commit message, no explanations."""
                 return None
 
             gemini_model = genai.GenerativeModel("gemini-2.5-pro")
+            response = gemini_model.generate_content(prompt)
+            return response.text
+
+        elif model == "gemini-2.0-flash":
+            if not gemini_api_key:
+                click.echo("Error: GOOGLE_API_KEY environment variable not set.")
+                return None
+
+            gemini_model = genai.GenerativeModel("gemini-2.0-flash")
             response = gemini_model.generate_content(prompt)
             return response.text
 
