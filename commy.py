@@ -33,8 +33,6 @@ def generate(model):
             ["git", "diff", "--staged"], capture_output=True, text=True, check=True
         )
 
-        click.echo(result.stdout)
-
         commit_message = generate_commit_message(result.stdout, model)
         click.echo(commit_message)
 

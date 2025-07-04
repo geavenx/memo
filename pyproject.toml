@@ -19,6 +19,7 @@ classifiers = [
 dependencies = [
     "click",
     "gitpython",
+    "google-generativeai>=0.8.5",
     "openai",
     "python-dotenv",
 ]
