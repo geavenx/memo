@@ -10,13 +10,17 @@ of staged changes and project context.
 Using uv (recommended):
 
 ```bash
-uv add memo
+git clone https://github.com/geavenx/memo.git
+cd memo
+uv tool install .
 ```
 
 Or with pip:
 
 ```bash
-pip install memo
+git clone https://github.com/geavenx/memo.git
+cd memo
+pip install .
 ```
 
 ### Basic Usage
@@ -49,19 +53,23 @@ pip install memo
 ### Using uv (Recommended)
 
 ```bash
-uv add memo
+git clone https://github.com/geavenx/memo.git
+cd memo
+uv tool install .
 ```
 
 ### Using pip
 
 ```bash
-pip install memo
+git clone https://github.com/geavenx/memo.git
+cd memo
+pip install .
 ```
 
 ### Development Installation
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/geavenx/memo.git
 cd memo
 uv sync
 ```
@@ -268,4 +276,3 @@ MIT License - see LICENSE file for details.
 - For usage questions, see the [Configuration Guide](docs/configuration.md)
 - For detailed usage examples, see [docs/usage.md](docs/usage.md)
 - For bugs and feature requests, open an issue on GitHub
-
