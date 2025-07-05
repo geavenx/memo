@@ -1,16 +1,271 @@
 # Memo
 
-A CLI tool to generate conventional commit messages with AI, fully context aware
-of the diff on staged files and context aware of the overall project structure.
+A CLI tool to generate conventional commit messages using AI, with full awareness
+of staged changes and project context.
+
+## Quick Start
+
+### Installation
+
+Using uv (recommended):
+
+```bash
+uv add memo
+```
+
+Or with pip:
+
+```bash
+pip install memo
+```
+
+### Basic Usage
+
+1. Stage your changes:
+
+    ```bash
+    git add .
+    ```
+
+2. Generate a commit message:
+
+    ```bash
+    memo generate
+    ```
+
+3. Follow the interactive prompts to review, edit, or commit.
+
+## Features
+
+- **AI-Powered Generation**: Uses OpenAI GPT or Google Gemini models to generate meaningful commit messages
+- **Context-Aware**: Analyzes staged changes, project structure, and commit history for relevant messages
+- **Conventional Commits**: Follows the conventional commit specification
+- **Interactive Mode**: Review and edit generated messages before committing
+- **Flexible Configuration**: Customize behavior through project-specific or global configuration files
+- **Multiple AI Models**: Support for various AI providers and models
 
 ## Installation
 
+### Using uv (Recommended)
+
 ```bash
-pip install .
+uv add memo
+```
+
+### Using pip
+
+```bash
+pip install memo
+```
+
+### Development Installation
+
+```bash
+git clone <repository-url>
+cd memo
+uv sync
+```
+
+## API Keys Setup
+
+Memo requires API keys for AI providers. Set up your environment:
+
+```bash
+export OPENAI_API_KEY="your-openai-api-key"
+export GOOGLE_API_KEY="your-google-api-key"
+```
+
+Or create a `.env` file in your project:
+
+```bash
+OPENAI_API_KEY=your-openai-api-key
+GOOGLE_API_KEY=your-google-api-key
 ```
 
 ## Usage
 
+### Generate Commit Messages
+
+Basic usage:
+
 ```bash
 memo generate
 ```
+
+With specific AI model:
+
+```bash
+memo generate --model gpt-4.1-mini
+memo generate --model gemini-2.5-pro
+```
+
+Non-interactive mode (output only):
+
+```bash
+memo generate --no-interactive
+```
+
+### Configuration Management
+
+View current configuration:
+
+```bash
+memo config show
+```
+
+Set configuration values:
+
+```bash
+memo config set default_model gemini-2.5-pro
+memo config set commit_rules.max_subject_length 50
+```
+
+Reset configuration:
+
+```bash
+memo config reset
+```
+
+### System Status
+
+Check system status:
+
+```bash
+memo status
+```
+
+Shows git repository status, configuration, and AI provider availability.
+
+## Configuration
+
+Memo supports flexible configuration through JSON files. You can configure:
+
+- AI model selection
+- Interactive mode behavior
+- Conventional commit rules
+- Project structure context
+- Commit history analysis
+
+### Configuration Files
+
+- **Project-specific**: `.memo.json` in your project directory
+- **User-global**: `~/.memo.json` in your home directory
+
+### Quick Configuration Example
+
+Create a `.memo.json` file in your project:
+
+```json
+{
+  "default_model": "gemini-2.5-pro",
+  "interactive_mode": true,
+  "commit_rules": {
+    "max_subject_length": 72,
+    "require_scope": true
+  }
+}
+```
+
+For comprehensive configuration options and examples, see the [Configuration Guide](docs/configuration.md).
+
+## Supported AI Models
+
+- **gemini-2.0-flash** (default): Fast, efficient Google Gemini model
+- **gemini-2.5-pro**: Advanced Google Gemini model
+- **gpt-4.1-mini**: OpenAI GPT model
+
+## Interactive Mode
+
+When enabled (default), Memo presents options after generating a commit message:
+
+1. **Accept**: Commit immediately with the generated message
+2. **Regenerate**: Generate a new message
+3. **Edit**: Open git's commit editor with the generated message
+4. **Deny**: Exit without committing
+
+## Examples
+
+### Basic Workflow
+
+```bash
+# Make changes to your code
+git add .
+memo generate
+# Follow interactive prompts
+```
+
+### Team Project Setup
+
+```bash
+# Create project configuration
+echo '{
+  "default_model": "gemini-2.5-pro",
+  "commit_rules": {
+    "require_scope": true,
+    "max_subject_length": 72
+  }
+}' > .memo.json
+
+# Commit the configuration
+git add .memo.json
+git commit -m "feat: add memo configuration for team standards"
+```
+
+### CI/CD Integration
+
+```bash
+# Non-interactive mode for scripts
+memo generate --no-interactive > commit_message.txt
+git commit -F commit_message.txt
+```
+
+## Development
+
+### Prerequisites
+
+- Python 3.11+
+- uv package manager
+
+### Setup
+
+```bash
+git clone <repository-url>
+cd memo
+uv sync
+```
+
+### Running Tests
+
+```bash
+uv run pytest tests/
+```
+
+### Code Quality
+
+```bash
+# Linting
+uvx ruff check --fix .
+
+# Formatting
+uvx ruff format .
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Run tests and linting
+6. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Support
+
+- For usage questions, see the [Configuration Guide](docs/configuration.md)
+- For detailed usage examples, see [docs/usage.md](docs/usage.md)
+- For bugs and feature requests, open an issue on GitHub
+
