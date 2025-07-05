@@ -258,7 +258,7 @@ git add .memo.json
 git commit -m "feat: add memo configuration for team standards"
 ```
 
-### CI/CD Integration
+### Scripting
 
 ```bash
 # Non-interactive mode for scripts
