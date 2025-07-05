@@ -76,19 +76,38 @@ uv sync
 
 ## API Keys Setup
 
-Memo requires API keys for AI providers. Set up your environment:
+Memo provides flexible API key management for AI providers.
+
+### Option 1: CLI Management (Recommended)
+
+Use the built-in authentication commands for secure, persistent storage:
+
+```bash
+# Set your API keys
+memo auth set openai sk-your-openai-api-key
+memo auth set google your-google-api-key
+
+# Verify configuration
+memo auth list
+```
+
+### Option 2: Environment Variables
 
 ```bash
 export OPENAI_API_KEY="your-openai-api-key"
 export GOOGLE_API_KEY="your-google-api-key"
 ```
 
-Or create a `.env` file in your project:
+### Option 3: .env Files
+
+Create a `.env` file in your project, home directory, or `~/.memo/`:
 
 ```bash
 OPENAI_API_KEY=your-openai-api-key
 GOOGLE_API_KEY=your-google-api-key
 ```
+
+**Note**: CLI-managed keys work anywhere you run memo, even when installed globally with `uv tool install` or `pip install`.
 
 ## Usage
 
@@ -134,6 +153,26 @@ Reset configuration:
 memo config reset
 ```
 
+### API Key Management
+
+Manage API keys securely through the CLI:
+
+```bash
+# Set API keys
+memo auth set openai sk-your-api-key
+memo auth set google your-google-api-key
+
+# View configured keys (masked)
+memo auth show
+memo auth show openai
+
+# List provider status
+memo auth list
+
+# Remove keys
+memo auth remove openai
+```
+
 ### System Status
 
 Check system status:
@@ -142,7 +181,7 @@ Check system status:
 memo status
 ```
 
-Shows git repository status, configuration, and AI provider availability.
+Shows git repository status, configuration, AI provider availability, and authentication status.
 
 ## Configuration
 

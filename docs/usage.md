@@ -152,21 +152,78 @@ Enter your choice (1-4) [3]:
 3. **Edit**: Opens the standard git commit editor with the generated message as a starting point
 4. **Deny**: Exits without committing
 
-## Environment Variables
+## API Key Management
 
-Set up your AI provider API keys:
+Memo provides multiple ways to configure your AI provider API keys for maximum flexibility.
+
+### Using the CLI (Recommended)
+
+Set API keys directly through the CLI, which stores them securely in `~/.local/share/memo/auth.json`:
+
+```bash
+# Set API keys
+memo auth set openai sk-your-openai-api-key
+memo auth set google your-google-api-key
+```
+
+View configured API keys (masked for security):
+
+```bash
+# Show all providers
+memo auth show
+
+# Show specific provider
+memo auth show openai
+```
+
+List all provider status:
+
+```bash
+memo auth list
+```
+
+Remove API keys:
+
+```bash
+memo auth remove openai
+memo auth remove google
+```
+
+### Using Environment Variables
+
+Set up your AI provider API keys as environment variables:
 
 ```bash
 export OPENAI_API_KEY="your-openai-api-key"
 export GOOGLE_API_KEY="your-google-api-key"
 ```
 
-You can also use a `.env` file in your project directory:
+### Using .env Files
+
+Memo automatically searches for `.env` files in multiple locations:
+
+1. **Current working directory**: `.env`
+2. **User home directory**: `~/.env`
+3. **User config directory**: `~/.memo/.env`
+
+Create a `.env` file in any of these locations:
 
 ```bash
 OPENAI_API_KEY=your-openai-api-key
 GOOGLE_API_KEY=your-google-api-key
 ```
+
+### API Key Priority
+
+Memo loads API keys in this priority order (highest to lowest):
+
+1. **System environment variables** (highest priority)
+2. **CLI-managed API keys** (`~/.local/share/memo/auth.json`)
+3. **Project .env file** (current working directory)
+4. **User home .env file** (`~/.env`)
+5. **User config .env file** (`~/.memo/.env`)
+
+This ensures maximum flexibility while maintaining security.
 
 ## AI Models
 
@@ -273,8 +330,10 @@ Create a `.memo.json` file in your project:
 
 #### **"API key not available"**
 
-- Set up your API keys in environment variables or `.env` file
-- Check with `memo status` to see which providers are available
+- Set up your API keys using `memo auth set <provider> <key>`
+- Or use environment variables or `.env` files
+- Check with `memo status` or `memo auth list` to see which providers are available
+- Verify the source of your API keys with `memo auth show`
 
 #### **"Error generating commit message"**
 

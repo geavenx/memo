@@ -6,10 +6,12 @@ from typing import Optional
 
 import click
 import google.generativeai as genai
-from dotenv import load_dotenv
 from openai import OpenAI
 
-load_dotenv()
+from ..config.environment import load_environment_variables
+
+# Load environment variables from all sources
+load_environment_variables()
 
 
 class AIProvider(ABC):
