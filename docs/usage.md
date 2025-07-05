@@ -1,8 +1,8 @@
-# Commy V2 Usage Guide
+# Memo Usage Guide
 
 ## Installation
 
-Install Commy V2 using pip:
+Install Memo using pip:
 
 ```bash
 pip install .
@@ -21,20 +21,20 @@ pip install -e .
 Generate a commit message for your staged changes:
 
 ```bash
-cm generate
+memo generate
 ```
 
 Generate with a specific AI model:
 
 ```bash
-cm generate --model gpt-4.1-mini
-cm generate --model gemini-2.5-pro
+memo generate --model gpt-4.1-mini
+memo generate --model gemini-2.5-pro
 ```
 
 Generate without interactive mode (just output the message):
 
 ```bash
-cm generate --no-interactive
+memo generate --no-interactive
 ```
 
 ### Configuration Management
@@ -42,36 +42,36 @@ cm generate --no-interactive
 Show current configuration:
 
 ```bash
-cm config show
+memo config show
 ```
 
 Show specific configuration value:
 
 ```bash
-cm config show default_model
+memo config show default_model
 ```
 
 Set configuration values:
 
 ```bash
-cm config set default_model gemini-2.5-pro
-cm config set interactive_mode false
-cm config set commit_rules.max_subject_length 50
+memo config set default_model gemini-2.5-pro
+memo config set interactive_mode false
+memo config set commit_rules.max_subject_length 50
 ```
 
 Reset configuration to defaults:
 
 ```bash
-cm config reset
-cm config reset default_model
+memo config reset
+memo config reset default_model
 ```
 
 ### System Status
 
-Check the status of Commy V2:
+Check the status of Memo:
 
 ```bash
-cm status
+memo status
 ```
 
 This shows:
@@ -83,12 +83,12 @@ This shows:
 
 ## Configuration
 
-Commy V2 supports project-specific and user-global configuration files.
+Memo supports project-specific and user-global configuration files.
 
 ### Configuration File Locations
 
-1. **Project-specific**: `.commy.json` in the current directory
-2. **User-global**: `~/.commy.json` in your home directory
+1. **Project-specific**: `.memo.json` in the current directory
+2. **User-global**: `~/.memo.json` in your home directory
 
 Project-specific configuration takes precedence over user-global configuration.
 
@@ -188,7 +188,7 @@ Models are automatically selected based on availability and configuration:
 
 ### Intelligent Context Analysis
 
-Commy V2 provides intelligent context to the AI models:
+Memo provides intelligent context to the AI models:
 
 - **Commit History Analysis**: Learns from your repository's commit patterns
 - **Multi-file Analysis**: Understands the scope of changes across multiple files
@@ -223,7 +223,7 @@ Generated messages follow the [Conventional Commits](https://www.conventionalcom
 git add .
 
 # Generate and commit
-cm generate
+memo generate
 
 # Follow interactive prompts to review/edit/commit
 ```
@@ -235,7 +235,7 @@ cm generate
 git add .
 
 # Generate message only
-cm generate --no-interactive
+memo generate --no-interactive
 
 # Copy the output and use with git commit
 git commit -m "feat(auth): add user authentication system"
@@ -243,7 +243,7 @@ git commit -m "feat(auth): add user authentication system"
 
 ### Project Configuration
 
-Create a `.commy.json` file in your project:
+Create a `.memo.json` file in your project:
 
 ```json
 {
@@ -274,7 +274,7 @@ Create a `.commy.json` file in your project:
 #### **"API key not available"**
 
 - Set up your API keys in environment variables or `.env` file
-- Check with `cm status` to see which providers are available
+- Check with `memo status` to see which providers are available
 
 #### **"Error generating commit message"**
 
@@ -284,7 +284,7 @@ Create a `.commy.json` file in your project:
 
 ### Getting Help
 
-- Use `cm --help` for general help
-- Use `cm <command> --help` for command-specific help
-- Check `cm status` to diagnose configuration issues
+- Use `memo --help` for general help
+- Use `memo <command> --help` for command-specific help
+- Check `memo status` to diagnose configuration issues
 
