@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "commy-v2"
+name = "memo"
 version = "0.1.0"
 authors = [
     { name = "Vitor", email = "vitordonnangeloc@proton.me" },
@@ -18,11 +18,28 @@ classifiers = [
 ]
 dependencies = [
     "click",
-    "gitpython",
     "google-generativeai>=0.8.5",
     "openai",
     "python-dotenv",
 ]
 
 [project.scripts]
-cm = "commy:cli"
+memo = "memo.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+python_classes = ["Test*"]
