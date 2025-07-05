@@ -49,10 +49,13 @@ class GitOperations:
                 error_msg += f"\n{err.stderr}"
             return False, error_msg
 
-    def open_commit_editor(self) -> Tuple[bool, str]:
-        """Open the git commit editor."""
+    def open_commit_editor(self, message: str = "") -> Tuple[bool, str]:
+        """Open the git commit editor with optional pre-populated message."""
         try:
-            subprocess.run(["git", "commit"], check=True)
+            if message:
+                subprocess.run(["git", "commit", "-m", message, "--edit"], check=True)
+            else:
+                subprocess.run(["git", "commit"], check=True)
             return True, "Commit process completed!"
 
         except subprocess.CalledProcessError as err:

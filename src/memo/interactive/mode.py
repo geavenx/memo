@@ -31,7 +31,7 @@ class InteractiveMode:
                 if result:
                     commit_message, current_model = result
             elif choice == "3":
-                self._handle_edit()
+                self._handle_edit(commit_message)
                 break
             elif choice == "4":
                 self._handle_deny()
@@ -101,9 +101,9 @@ class InteractiveMode:
             click.echo("❌ Failed to regenerate message. Keeping current message.")
             return None
 
-    def _handle_edit(self) -> None:
+    def _handle_edit(self, commit_message: str) -> None:
         """Handle edit option - open git commit editor."""
-        success, output = self.git_ops.open_commit_editor()
+        success, output = self.git_ops.open_commit_editor(commit_message)
         if success:
             click.echo(f"\n✅ {output}")
         else:
