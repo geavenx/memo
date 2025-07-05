@@ -314,4 +314,4 @@ MIT License - see LICENSE file for details.
 
 - For usage questions, see the [Configuration Guide](docs/configuration.md)
 - For detailed usage examples, see [docs/usage.md](docs/usage.md)
-- For bugs and feature requests, open an issue on GitHub
+- For bugs and feature requests, open an issue
