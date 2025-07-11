@@ -31,7 +31,12 @@ def cli() -> None:
     is_flag=True,
     help="Disable interactive mode and just output the commit message",
 )
-def generate(model: Optional[str], no_interactive: bool) -> None:
+@click.option(
+    "--verbose", "-v",
+    is_flag=True,
+    help="Show the prompt sent to the AI model",
+)
+def generate(model: Optional[str], no_interactive: bool, verbose: bool) -> None:
     """Generate a conventional commit message."""
     config_manager = ConfigManager()
     git_ops = GitOperations()
@@ -73,6 +78,15 @@ def generate(model: Optional[str], no_interactive: bool) -> None:
     # Build prompt and generate message
     prompt_builder = PromptBuilder(config)
     prompt = prompt_builder.build_prompt(diff_content)
+    
+    # Show prompt if verbose mode is enabled
+    if verbose:
+        click.echo(f"\n{'='*60}")
+        click.echo(f"PROMPT SENT TO {model.upper()}:")
+        click.echo(f"{'='*60}")
+        click.echo(prompt)
+        click.echo(f"{'='*60}\n")
+    
     commit_message = ai_provider.generate_message(prompt)
 
     if not commit_message:
@@ -83,7 +97,7 @@ def generate(model: Optional[str], no_interactive: bool) -> None:
     interactive_enabled = config["interactive_mode"] and not no_interactive
 
     if interactive_enabled:
-        interactive_mode = InteractiveMode(config_manager, git_ops)
+        interactive_mode = InteractiveMode(config_manager, git_ops, verbose)
         interactive_mode.handle_interactive_mode(commit_message, diff_content, model)
     else:
         click.echo(commit_message)

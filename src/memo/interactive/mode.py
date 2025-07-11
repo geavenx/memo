@@ -11,9 +11,10 @@ from ..git.operations import GitOperations
 class InteractiveMode:
     """Handles interactive mode for commit message generation."""
 
-    def __init__(self, config_manager: ConfigManager, git_ops: GitOperations):
+    def __init__(self, config_manager: ConfigManager, git_ops: GitOperations, verbose: bool = False):
         self.config_manager = config_manager
         self.git_ops = git_ops
+        self.verbose = verbose
 
     def handle_interactive_mode(
         self, commit_message: str, diff_content: str, current_model: str
@@ -93,6 +94,15 @@ class InteractiveMode:
 
         prompt_builder = PromptBuilder(config)
         prompt = prompt_builder.build_prompt(diff_content)
+        
+        # Show prompt if verbose mode is enabled
+        if self.verbose:
+            click.echo(f"\n{'='*60}")
+            click.echo(f"PROMPT SENT TO {selected_model.upper()}:")
+            click.echo(f"{'='*60}")
+            click.echo(prompt)
+            click.echo(f"{'='*60}\n")
+        
         new_message = ai_provider.generate_message(prompt)
 
         if new_message:
