@@ -14,7 +14,7 @@ from .interactive.mode import InteractiveMode
 
 
 @click.group()
-@click.version_option(version="1.0.0", prog_name="Memo")
+@click.version_option(version="1.1.0", prog_name="Memo")
 def cli() -> None:
     """Memo - AI-powered conventional commit message generator."""
     pass
@@ -32,7 +32,8 @@ def cli() -> None:
     help="Disable interactive mode and just output the commit message",
 )
 @click.option(
-    "--verbose", "-v",
+    "--verbose",
+    "-v",
     is_flag=True,
     help="Show the prompt sent to the AI model",
 )
@@ -78,15 +79,15 @@ def generate(model: Optional[str], no_interactive: bool, verbose: bool) -> None:
     # Build prompt and generate message
     prompt_builder = PromptBuilder(config)
     prompt = prompt_builder.build_prompt(diff_content)
-    
+
     # Show prompt if verbose mode is enabled
     if verbose:
-        click.echo(f"\n{'='*60}")
+        click.echo(f"\n{'=' * 60}")
         click.echo(f"PROMPT SENT TO {model.upper()}:")
-        click.echo(f"{'='*60}")
+        click.echo(f"{'=' * 60}")
         click.echo(prompt)
-        click.echo(f"{'='*60}\n")
-    
+        click.echo(f"{'=' * 60}\n")
+
     commit_message = ai_provider.generate_message(prompt)
 
     if not commit_message:
