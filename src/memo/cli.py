@@ -14,7 +14,7 @@ from .interactive.mode import InteractiveMode
 
 
 @click.group()
-@click.version_option(version="0.1.0", prog_name="Memo")
+@click.version_option(version="1.0.0", prog_name="Memo")
 def cli() -> None:
     """Memo - AI-powered conventional commit message generator."""
     pass
