@@ -61,7 +61,7 @@ class OpenAIProvider(AIProvider):
 class GeminiProvider(AIProvider):
     """Google Gemini provider."""
 
-    def __init__(self, model: str = "gemini-2.0-flash"):
+    def __init__(self, model: str = "gemini-2.5-flash"):
         self.model = model
         self.api_key = os.getenv("GOOGLE_API_KEY")
         if self.api_key:
@@ -90,7 +90,7 @@ def get_ai_provider(model: str) -> Optional[AIProvider]:
     """Factory function to get the appropriate AI provider."""
     if model == "gpt-4.1-mini":
         return OpenAIProvider(model)
-    elif model in ["gemini-2.0-flash", "gemini-2.5-pro"]:
+    elif model in ["gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro"]:
         return GeminiProvider(model)
     else:
         click.echo(f"Error: Unsupported model '{model}'.")

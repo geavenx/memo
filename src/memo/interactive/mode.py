@@ -76,15 +76,21 @@ class InteractiveMode:
     ) -> tuple[str, str] | None:
         """Handle regenerate option - generate new message with same or different model."""
         click.echo("\nAvailable models:")
-        click.echo("1. gemini-2.0-flash")
-        click.echo("2. gemini-2.5-pro")
-        click.echo("3. gpt-4.1-mini")
+        click.echo("1. gemini-2.5-flash")
+        click.echo("2. gpt-4.1-mini")
+        click.echo("3. gemini-2.0-flash")
+        click.echo("4. gemini-2.5-pro")
 
         model_choice = click.prompt(
-            f"\nSelect model (1-3, current: {current_model})", default="1", type=str
+            f"\nSelect model (1-4, current: {current_model})", default="1", type=str
         )
 
-        models = {"1": "gemini-2.0-flash", "2": "gemini-2.5-pro", "3": "gpt-4.1-mini"}
+        models = {
+            "1": "gemini-2.5-flash",
+            "2": "gpt-4.1-mini",
+            "3": "gemini-2.0-flash",
+            "4": "gemini-2.5-pro",
+        }
 
         selected_model = models.get(model_choice, current_model)
         click.echo(f"\nRegenerating with {selected_model}...")

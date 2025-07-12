@@ -24,7 +24,7 @@ def cli() -> None:
 @click.option(
     "--model",
     default=None,
-    help="AI model to use for generating commit messages. Options: gemini-2.0-flash, gemini-2.5-pro, gpt-4.1-mini",
+    help="AI model to use for generating commit messages. Options: gemini-2.5-flash, gemini-2.0-flash, gemini-2.5-pro, gpt-4.1-mini",
 )
 @click.option(
     "--no-interactive",
