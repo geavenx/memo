@@ -217,9 +217,10 @@ For comprehensive configuration options and examples, see the [Configuration Gui
 
 ## Supported AI Models
 
-- **gemini-2.0-flash** (default): Fast, efficient Google Gemini model
-- **gemini-2.5-pro**: Advanced Google Gemini model
-- **gpt-4.1-mini**: OpenAI GPT model
+- **gemini-2.5-flash** (default): Fast, efficient Google model
+- **gpt-4.1-mini**: OpenAI very efficient model
+- **gemini-2.0-flash**: Ancestor of the "Fast, efficient Google model"
+- **gemini-2.5-pro**: Advanced Google model (slow because of `reasoning`)
 
 ## Interactive Mode
 
