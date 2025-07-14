@@ -18,13 +18,18 @@ class AIProvider(ABC):
     """Abstract base class for AI providers."""
 
     @abstractmethod
-    def generate_message(self, prompt: str) -> Optional[str]:
+    def generate_message(self, prompt: str, verbose: bool) -> Optional[str]:
         """Generate a commit message using the AI provider."""
         pass
 
     @abstractmethod
     def is_available(self) -> bool:
         """Check if the AI provider is available (API key configured)."""
+        pass
+
+    @abstractmethod
+    def get_usage_info(self) -> str:
+        """Get token usage information from the AI provider."""
         pass
 
 
@@ -35,7 +40,7 @@ class OpenAIProvider(AIProvider):
         self.model = model
         self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-    def generate_message(self, prompt: str) -> Optional[str]:
+    def generate_message(self, prompt: str, verbose: bool) -> Optional[str]:
         """Generate a commit message using OpenAI."""
         try:
             response = self.client.chat.completions.create(
@@ -48,10 +53,25 @@ class OpenAIProvider(AIProvider):
                     {"role": "user", "content": prompt},
                 ],
             )
+            if verbose:
+                click.echo(f"\n{'=' * 60}")
+                input_tokens = response.usage.prompt_tokens if response.usage else 0
+                output_tokens = (
+                    response.usage.completion_tokens if response.usage else 0
+                )
+                total_tokens = response.usage.total_tokens if response.usage else 0
+                click.echo(f"\n{'=' * 60}\n")
+                click.echo("TOKEN USAGE:")
+                click.echo(f"Input Tokens: {input_tokens}")
+                click.echo(f"Output Tokens: {output_tokens}")
+                click.echo(f"Total Tokens: {total_tokens}")
             return response.choices[0].message.content
         except Exception as e:
             click.echo(f"Error generating commit message with OpenAI: {e}")
             return None
+
+    def get_usage_info(self) -> str:
+        return super().get_usage_info()
 
     def is_available(self) -> bool:
         """Check if OpenAI API key is configured."""
@@ -65,21 +85,35 @@ class GeminiProvider(AIProvider):
         self.model = model
         self.api_key = os.getenv("GOOGLE_API_KEY")
         if self.api_key:
-            genai.configure(api_key=self.api_key)
+            genai.configure(api_key=self.api_key)  # type: ignore
 
-    def generate_message(self, prompt: str) -> Optional[str]:
+    def generate_message(self, prompt: str, verbose: bool) -> Optional[str]:
         """Generate a commit message using Gemini."""
         if not self.api_key:
             click.echo("Error: GOOGLE_API_KEY environment variable not set.")
             return None
 
         try:
-            gemini_model = genai.GenerativeModel(self.model)
+            gemini_model = genai.GenerativeModel(self.model)  # type: ignore
             response = gemini_model.generate_content(prompt)
+
+            if verbose:
+                input_tokens = response.usage_metadata.prompt_token_count
+                output_tokens = response.usage_metadata.candidates_token_count
+                total_tokens = response.usage_metadata.total_token_count
+                click.echo(f"\n{'=' * 60}\n")
+                click.echo("TOKEN USAGE:")
+                click.echo(f"Input Tokens: {input_tokens}")
+                click.echo(f"Output Tokens: {output_tokens}")
+                click.echo(f"Total Tokens: {total_tokens}")
+
             return response.text
         except Exception as e:
             click.echo(f"Error generating commit message with Gemini: {e}")
             return None
+
+    def get_usage_info(self) -> str:
+        return super().get_usage_info()
 
     def is_available(self) -> bool:
         """Check if Gemini API key is configured."""
@@ -95,3 +129,18 @@ def get_ai_provider(model: str) -> Optional[AIProvider]:
     else:
         click.echo(f"Error: Unsupported model '{model}'.")
         return None
+
+
+"""
+Google response
+
+prompt_token_count: 1099
+candidates_token_count: 14
+total_token_count: 2528
+"""
+
+"""
+OpenAI response
+
+CompletionUsage(completion_tokens=19, prompt_tokens=1010, total_tokens=1029, completion_tokens_details=CompletionTokensDetails(accepted_prediction_tokens=0, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=0), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cached_tokens=0))
+"""

@@ -17,13 +17,13 @@ The project-specific configuration takes precedence over the user-global configu
 
 ```json
 {
-  "default_model": "gemini-2.0-flash",
+  "default_model": "gemini-2.5-flash",
   "interactive_mode": true,
   "commit_rules": {
     "max_subject_length": 72,
     "require_scope": false,
     "allowed_types": [
-      "feat", "fix", "docs", "style", "refactor", 
+      "feat", "fix", "docs", "style", "refactor",
       "perf", "test", "build", "ci", "chore", "revert"
     ],
     "custom_rules": []
@@ -37,10 +37,11 @@ The project-specific configuration takes precedence over the user-global configu
 
 #### `default_model`
 - **Type**: String
-- **Default**: `"gemini-2.0-flash"`
+- **Default**: `"gemini-2.5-flash"`
 - **Description**: The AI model to use for generating commit messages
 - **Valid Values**:
-  - `"gemini-2.0-flash"`: Fast, efficient Google Gemini model (recommended)
+  - `"gemini-2.5-flash"`: Fast, efficient Google Gemini model (recommended)
+  - `"gemini-2.0-flash"`: Ancestor of `"gemini-2.5-flash"`, optimized for speed and efficiency
   - `"gemini-2.5-pro"`: More advanced Google Gemini model
   - `"gpt-4.1-mini"`: OpenAI GPT model
 
