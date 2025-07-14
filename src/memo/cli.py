@@ -61,7 +61,7 @@ def generate(model: Optional[str], no_interactive: bool, verbose: bool) -> None:
 
     # Get staged diff
     diff_content, error = git_ops.get_staged_diff()
-    if error:
+    if error or not diff_content:
         click.echo(f"❌ {error}")
         return
 
