@@ -86,9 +86,8 @@ def generate(model: Optional[str], no_interactive: bool, verbose: bool) -> None:
         click.echo(f"PROMPT SENT TO {model.upper()}:")
         click.echo(f"{'=' * 60}")
         click.echo(prompt)
-        click.echo(f"{'=' * 60}\n")
 
-    commit_message = ai_provider.generate_message(prompt)
+    commit_message = ai_provider.generate_message(prompt, verbose)
 
     if not commit_message:
         click.echo("❌ Failed to generate commit message.")
