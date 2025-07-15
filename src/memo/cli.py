@@ -20,6 +20,11 @@ def cli() -> None:
     pass
 
 
+def add_aliases(command, aliases):
+    for alias in aliases:
+        cli.add_command(command, name=alias)
+
+
 @cli.command()
 @click.option(
     "--model",
@@ -289,6 +294,7 @@ def list() -> None:
 
 def main() -> None:
     """Main entry point for the CLI."""
+    add_aliases(generate, ["gen", "g"])
     cli()
 
 
